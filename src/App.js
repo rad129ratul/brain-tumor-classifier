@@ -350,8 +350,7 @@ const App = () => {
       {/* Footer */}
       <footer className="bg-dark text-white text-center py-3 mt-5">
         <small>
-          Brain Tumor Classifier v1.0 | Model Accuracy: 98.77% | 
-          Built with React & ONNX Runtime
+          Brain Tumor Classifier v1.0 | Model Accuracy: 98.57% | Built with React & ONNX Runtime
         </small>
       </footer>
     </div>
