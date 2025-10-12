@@ -4,7 +4,6 @@
 [![React](https://img.shields.io/badge/React-19.2.0-blue)](https://reactjs.org/)
 [![ONNX Runtime](https://img.shields.io/badge/ONNX-Runtime-orange)](https://onnxruntime.ai/)
 [![Model Accuracy](https://img.shields.io/badge/Accuracy-98.38%25-success)](https://brain-tumor-classifier-ecru.vercel.app/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > An AI-powered web application for brain tumor classification from MRI images using advanced Bayesian Deep Learning with MobileNetV2 architecture.
 
