@@ -23,10 +23,6 @@
 - [Usage](#usage)
 - [Model Training](#model-training)
 - [Dataset](#dataset)
-- [API Reference](#api-reference)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
 - [Acknowledgments](#acknowledgments)
 
 ---
@@ -337,22 +333,6 @@ The training process achieved:
   - Meningioma: 937 images
   - No Tumor: 500 images
   - Pituitary: 901 images
-
-## 🔌 API Reference
-
-### ONNX Model Interface
-
-**Input:**
-- **Name:** `input`
-- **Shape:** `[1, 3, 224, 224]`
-- **Type:** `float32`
-- **Preprocessing:** Resize to 224×224, normalize with ImageNet stats
-
-**Output:**
-- **Name:** `output`
-- **Shape:** `[1, 4]`
-- **Type:** `float32`
-- **Postprocessing:** Apply softmax for probabilities
 
 ## 🙏 Acknowledgments
 
