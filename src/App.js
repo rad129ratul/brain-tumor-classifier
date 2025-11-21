@@ -245,7 +245,7 @@ const App = () => {
             🧠 Brain Tumor Classifier
           </span>
           <span className="text-white">
-            AI-Powered MRI Analysis
+            MRI Analysis
           </span>
         </div>
       </nav>
