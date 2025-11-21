@@ -183,6 +183,16 @@ const App = () => {
       const maxProb = Math.max(...meanPred);
       const predictedClass = meanPred.indexOf(maxProb);
       
+      // Determine confidence level based on entropy
+      const getConfidenceLevel = (entropyValue) => {
+        if (entropyValue < 0.3) return { level: "High Confidence", color: "success", description: "Clear prediction" };
+        if (entropyValue <= 0.7) return { level: "Moderate Confidence", color: "info", description: "Reasonably certain" };
+        if (entropyValue <= 1.1) return { level: "Some Uncertainty", color: "warning", description: "Borderline case" };
+        return { level: "High Uncertainty", color: "danger", description: "Ambiguous image" };
+      };
+      
+      const confidenceInfo = getConfidenceLevel(entropy);
+      
       setPrediction({
         class: CLASS_NAMES[predictedClass],
         confidence: maxProb * 100,
@@ -192,7 +202,10 @@ const App = () => {
         })),
         uncertainty: {
           entropy: entropy.toFixed(4),
-          stdDev: stdPred.reduce((a, b) => a + b, 0) / stdPred.length // Average std across classes
+          stdDev: stdPred.reduce((a, b) => a + b, 0) / stdPred.length, // Average std across classes
+          confidenceLevel: confidenceInfo.level,
+          confidenceColor: confidenceInfo.color,
+          confidenceDescription: confidenceInfo.description
         },
         mcDetails: {
           samples: samples,
@@ -336,15 +349,18 @@ const App = () => {
                         <h5 className="mb-3">Analysis Results</h5>
                         
                         {/* Primary Prediction */}
-                        <div className="alert alert-success">
+                        <div className={`alert alert-${prediction.uncertainty.confidenceColor}`}>
                           <h6>Predicted Class: <strong>{prediction.class}</strong></h6>
                           <div className="progress mt-2" style={{ height: '25px' }}>
                             <div 
-                              className="progress-bar bg-success"
+                              className={`progress-bar bg-${prediction.uncertainty.confidenceColor}`}
                               style={{ width: `${prediction.confidence}%` }}
                             >
                               {prediction.confidence.toFixed(1)}% Confidence
                             </div>
+                          </div>
+                          <div className="mt-2">
+                            <strong>Confidence Level:</strong> {prediction.uncertainty.confidenceLevel} - {prediction.uncertainty.confidenceDescription}
                           </div>
                         </div>
 
@@ -385,9 +401,17 @@ const App = () => {
                                 <p className="mb-0"><strong>{prediction.uncertainty.stdDev}</strong></p>
                               </div>
                             </div>
-                            <small className="text-muted mt-2 d-block">
-                              Lower values indicate higher confidence in the prediction
-                            </small>
+                            
+                            {/* Entropy Range Interpretation */}
+                            <div className="mt-3 p-3 bg-light rounded">
+                              <small className="text-muted">
+                                <strong>Entropy Interpretation:</strong><br/>
+                                • &lt; 0.3: High confidence, clear prediction<br/>
+                                • 0.3 - 0.7: Moderate confidence, reasonably certain<br/>
+                                • 0.7 - 1.1: Some uncertainty, borderline cases<br/>
+                                • &gt; 1.1: High uncertainty, ambiguous image
+                              </small>
+                            </div>
                           </div>
                         </div>
 
@@ -490,7 +514,12 @@ const App = () => {
                                   <small>
                                     <strong>Interpretation:</strong> The model ran 10 forward passes with different dropout masks. 
                                     Low standard deviation across samples indicates high confidence. 
-                                    Entropy below 0.5 = high confidence, above 1.0 = uncertain prediction.
+                                    <br/><br/>
+                                    <strong>Entropy Ranges:</strong><br/>
+                                    • &lt; 0.3: High confidence, clear prediction<br/>
+                                    • 0.3 - 0.7: Moderate confidence, reasonably certain<br/>
+                                    • 0.7 - 1.1: Some uncertainty, borderline cases<br/>
+                                    • &gt; 1.1: High uncertainty, ambiguous image
                                   </small>
                                 </div>
                               </div>
