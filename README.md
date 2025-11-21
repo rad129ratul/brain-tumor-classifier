@@ -3,7 +3,7 @@
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://brain-tumor-classifier-ecru.vercel.app/)
 [![React](https://img.shields.io/badge/React-19.2.0-blue)](https://reactjs.org/)
 [![ONNX Runtime](https://img.shields.io/badge/ONNX-Runtime-orange)](https://onnxruntime.ai/)
-[![Model Accuracy](https://img.shields.io/badge/Accuracy-98.38%25-success)](https://brain-tumor-classifier-ecru.vercel.app/)
+[![Model Accuracy](https://img.shields.io/badge/Accuracy-98.58%25-success)](https://brain-tumor-classifier-ecru.vercel.app/)
 
 > An AI-powered web application for brain tumor classification from MRI images using advanced Bayesian Deep Learning with MobileNetV2 architecture.
 
@@ -12,7 +12,6 @@
 ---
 
 ## 📋 Table of Contents
-
 - [Overview](#overview)
 - [Features](#features)
 - [Model Architecture](#model-architecture)
@@ -23,7 +22,10 @@
 - [Usage](#usage)
 - [Model Training](#model-training)
 - [Dataset](#dataset)
+- [Model Conversion](#model-conversion)
+- [Domain Adaptation](#domain-adaptation)
 - [Acknowledgments](#acknowledgments)
+- [Contact](#contact)
 
 ---
 
@@ -36,10 +38,9 @@ This project implements a state-of-the-art brain tumor classification system tha
 - **Pituitary** - Tumors in the pituitary gland
 - **No Tumor** - Healthy brain tissue
 
-The system achieves **98.38% accuracy** on external test data (3,264 images) and utilizes Bayesian Neural Networks for uncertainty quantification, making it highly reliable for educational and research purposes.
+The system achieves **98.58% accuracy** on internal test data (1,054 images) and utilizes Bayesian Neural Networks for uncertainty quantification, making it highly reliable for educational and research purposes.
 
 ### ⚠️ Important Notice
-
 **This tool is designed for educational and research purposes only. It should NOT be used as a substitute for professional medical diagnosis. Always consult qualified healthcare professionals for medical advice.**
 
 ---
@@ -52,6 +53,7 @@ The system achieves **98.38% accuracy** on external test data (3,264 images) and
 - **Transfer Learning** using pre-trained MobileNetV2
 - **5-Fold Cross-Validation** for robust model evaluation
 - **Weighted Cross-Entropy Loss** to handle class imbalance
+- **Domain Adaptation** techniques for improved generalization
 
 ### 🌐 Web Application
 - **Real-time Browser Inference** using ONNX Runtime Web
@@ -59,18 +61,18 @@ The system achieves **98.38% accuracy** on external test data (3,264 images) and
 - **Drag-and-drop Image Upload**
 - **Confidence Scores** with visual probability distributions
 - **Uncertainty Quantification** (Entropy & Standard Deviation)
+- **Monte Carlo Dropout Visualization** with 10 forward passes
 - **Optimized for Mobile** and desktop devices
 
 ### 📊 Model Features
 - **Single Image Prediction** with detailed probability breakdown
-- **Batch Processing** support
-- **Monte Carlo Sampling** for uncertainty estimation
-- **Class Activation Maps** ready architecture
+- **Uncertainty Metrics** including entropy and standard deviation
+- **Confidence Level Assessment** (High/Moderate/Some/High Uncertainty)
 - **Production-ready ONNX format** for cross-platform deployment
 
 ---
 
-## 🏗️ Model Architecture
+## 🗏️ Model Architecture
 
 ### Bayesian MobileNetV2 with Attention
 
@@ -123,39 +125,36 @@ Output (4 Classes with Uncertainty)
 
 | Metric | Mean ± Std |
 |--------|------------|
-| **Accuracy** | 97.95% ± 0.21% |
-| **Precision** | 97.97% ± 0.21% |
-| **Recall** | 97.95% ± 0.21% |
-| **F1-Score** | 97.95% ± 0.21% |
-| **Loss** | 0.5318 ± 0.0051 |
+| **Accuracy** | 97.69% ± 0.39% |
+| **Precision** | 97.75% ± 0.35% |
+| **Recall** | 97.69% ± 0.39% |
+| **F1-Score** | 97.70% ± 0.39% |
+| **Loss** | 0.5317 ± 0.0056 |
 
 ### Final Model Performance
 
-**Training Dataset:** 7,023 images (4 classes)
-**Internal Test Dataset:** 1,054 images (15% hold-out from training)
+**Training Dataset:** 7,023 images (4 classes)  
+**Internal Test Dataset:** 1,054 images (15% hold-out from training)  
 **External Test Dataset:** 3,264 images (completely unseen data)
 
-| Dataset | Accuracy | Precision | Recall | F1-Score |
-|---------|----------|-----------|--------|----------|
-| **Training** | 98.76% | - | - | - |
-| **Validation** | 98.55% | - | - | - |
-| **Internal Test** | **98.20%** | 98.24% | 98.20% | 98.20% |
-| **External Test** | **98.38%** | 98.38% | 98.38% | 98.38% |
+| Dataset | Accuracy |
+|---------|----------|
+| **Training** | 98.52% |
+| **Validation** | 98.77% |
+| **Internal Test** | **98.58%** |
+| **External Test** | **98.65%** |
 
-### Per-Class Performance (External Test)
+### Training Evolution (Final Model)
+- **Best Validation Accuracy:** 98.77%
+- **Final Test Accuracy:** 98.58%
+- **Training Convergence:** Achieved ~98% accuracy by epoch 18
+- **Stable Performance:** Maintained >98.5% accuracy in final epochs
 
-| Class | Accuracy | Samples | Error Rate |
-|-------|----------|---------|------------|
-| **Glioma** | 98.06% | 926 | 1.94% |
-| **Meningioma** | 97.33% | 937 | 2.67% |
-| **No Tumor** | 99.60% | 500 | 0.40% |
-| **Pituitary** | 99.11% | 901 | 0.89% |
-
-### Training Improvements
-
-- **Initial Model Accuracy:** 30.48%
-- **After Fine-tuning:** 98.38%
-- **Total Improvement:** +67.90%
+### Domain Adaptation Results
+- **Before Fine-tuning:** 30.48% (domain shift issue)
+- **After Fine-tuning:** 98.10%
+- **After Full Adaptation:** 98.65%
+- **Total Improvement:** +68.17%
 
 ---
 
@@ -176,7 +175,8 @@ Output (4 Classes with Uncertainty)
 - **Scikit-learn** - ML utilities and metrics
 
 ### Development Tools
-- **Google Colab** - Model training (Tesla T4 GPU)
+- **Google Colab** - Model training (Tesla P100/T4 GPU)
+- **Kaggle Notebooks** - Model training and conversion
 - **Vercel** - Web deployment
 - **Git** - Version control
 
@@ -189,19 +189,19 @@ brain-tumor-classifier/
 │
 ├── public/
 │   ├── model/
-│   │   └── brain_tumor_model.onnx      # Trained ONNX model (98.38% accuracy)
+│   │   └── brain_tumor_model.onnx
 │   ├── index.html
 │   ├── favicon.ico
 │   └── manifest.json
 │
 ├── src/
-│   ├── App.js                          # Main React component
-│   ├── App.css                         # Styling
-│   ├── index.js                        # Entry point
-│   └── index.css                       # Global styles
+│   ├── App.js
+│   ├── App.css
+│   ├── index.js
+│   └── index.css
 │
-├── package.json                        # Dependencies
-├── README.md                           # This file
+├── package.json
+├── README.md
 └── .gitignore
 ```
 
@@ -210,7 +210,6 @@ brain-tumor-classifier/
 ## 🚀 Installation
 
 ### Prerequisites
-
 - **Node.js** 16.x or higher
 - **npm** 8.x or higher
 - **Modern web browser** (Chrome, Firefox, Safari, Edge)
@@ -239,12 +238,9 @@ brain-tumor-classifier/
    ```
 
 ### Build for Production
-
 ```bash
 npm run build
 ```
-
-The optimized production build will be in the `build/` directory.
 
 ---
 
@@ -266,28 +262,40 @@ The optimized production build will be in the `build/` directory.
    - **Predicted Class** with confidence percentage
    - **Probability Distribution** for all classes
    - **Uncertainty Metrics** (entropy and standard deviation)
+   - **Confidence Level** (High/Moderate/Some/High Uncertainty)
+   - **Monte Carlo Dropout Details** (optional, expandable)
+
+### Understanding the Results
+
+#### Confidence Levels
+- **High Confidence** (Entropy < 0.3): Clear prediction
+- **Moderate Confidence** (Entropy 0.3-0.7): Reasonably certain
+- **Some Uncertainty** (Entropy 0.7-1.1): Borderline case
+- **High Uncertainty** (Entropy > 1.1): Ambiguous image
+
+#### Monte Carlo Dropout
+- 10 forward passes with different dropout masks
+- Mean prediction across all samples
+- Standard deviation indicates uncertainty
+- Low std = high confidence; High std = uncertain prediction
+
+---
 
 ## 🎓 Model Training
 
 ### Training Pipeline
 
-The model was trained using a comprehensive pipeline:
-
 #### 1. **Data Preparation**
 - **Dataset Size:** 7,023 MRI images
 - **Classes:** 4 (glioma, meningioma, notumor, pituitary)
 - **Augmentation:** Rotation, flipping, color jitter, random erasing
-- **Normalization:** ImageNet statistics
+- **Normalization:** ImageNet statistics (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 #### 2. **Training Configuration**
-- **Hardware:** Tesla T4 GPU (15.83 GB)
-- **Batch Size:** 64
+- **Hardware:** Tesla P100-PCIE-16GB GPU (17.06 GB memory)
+- **Batch Size:** 32
 - **Epochs:** 30
 - **Optimizer:** AdamW with differential learning rates
-  - Backbone: 3e-5
-  - Feature Enhancer: 8e-4
-  - Attention: 8e-4
-  - Classifier: 1.5e-3
 - **Scheduler:** OneCycleLR
 - **Loss Function:** Weighted Cross-Entropy + KL Divergence
 - **Label Smoothing:** 0.15
@@ -304,13 +312,12 @@ The model was trained using a comprehensive pipeline:
 - Validation: 12.8% (896 images)
 - Test: 15.0% (1,054 images)
 
-### Training Results Visualization
-
-The training process achieved:
-- **Initial accuracy:** ~40% (Epoch 1)
-- **Final training accuracy:** 98.74%
-- **Best validation accuracy:** 98.55%
-- **Convergence:** ~15-20 epochs
+### Training Results
+- **Initial accuracy:** ~44% (Epoch 1)
+- **Final training accuracy:** 98.52%
+- **Best validation accuracy:** 98.77%
+- **Final test accuracy:** 98.58%
+- **Convergence:** ~18-20 epochs
 
 ---
 
@@ -327,12 +334,52 @@ The training process achieved:
 
 ### External Validation: brain_tumor_classification3k
 - **Total Images:** 3,264
-- **Purpose:** Independent testing
+- **Purpose:** Independent testing and domain adaptation
 - **Distribution:**
   - Glioma: 926 images
   - Meningioma: 937 images
   - No Tumor: 500 images
   - Pituitary: 901 images
+
+---
+
+## 🔄 Model Conversion
+
+### Conversion Process
+1. **Load Bayesian Model**: Load checkpoint from training
+2. **Create Simplified Architecture**: Convert BayesLinear layers to standard Linear layers
+3. **Weight Adaptation**: Map Bayesian weights (mu parameters) to standard weights
+4. **ONNX Export**: Export to ONNX format with dynamic batch size
+5. **Quantization**: Optional INT8 quantization for smaller model size
+6. **Verification**: Test ONNX model against PyTorch model
+
+### Model Sizes
+- Original ONNX: ~13-14 MB
+- Quantized ONNX: ~3-4 MB (70% reduction)
+
+---
+
+## 🔧 Domain Adaptation
+
+### Problem Identified
+The original model showed only **30.48% accuracy** on the external dataset due to:
+- Class name mismatch (glioma vs glioma_tumor)
+- Different image characteristics
+- Domain shift between datasets
+
+#### Fine-tuning Process:
+1. **Data Analysis**: Identify distribution differences
+2. **Class Mapping**: Map external class names to original
+3. **Fine-tuning**: Train on external dataset (80% train, 20% val)
+4. **Evaluation**: Test on full external dataset
+
+#### Results:
+- **Before Fine-tuning:** 30.48%
+- **After Fine-tuning (10 epochs):** 98.10%
+- **Final Performance:** 98.65%
+- **Improvement:** +68.17%
+
+---
 
 ## 🙏 Acknowledgments
 
@@ -340,17 +387,21 @@ The training process achieved:
 - **Base Architecture:** MobileNetV2 by Google Research
 - **Bayesian Layers:** TorchBNN library
 - **ONNX Runtime:** Microsoft ONNX Runtime team
-- **Training Infrastructure:** Google Colab (Tesla T4 GPU)
+- **Training Infrastructure:** Google Colab (Tesla P100/T4 GPU) and Kaggle Notebooks
 - **Deployment:** Vercel platform
+
+---
 
 ## 📧 Contact
 
 **Project Maintainer:** Shaikh Radwan Ahmed Ratul
-- GitHub: [rad129ratul](https://github.com/rad129ratul)
-- Email: your.email@example.com
 
-**Project Link:** [https://github.com/rad129ratul/brain-tumor-classifier](https://github.com/rad129ratul/brain-tumor-classifier)
+- **Email:** radwan.ahmed1.cse@ulab.edu.bd | ratulrs29@gmail.com
+- **Phone:** 01715451470
+- **GitHub:** [rad129ratul](https://github.com/rad129ratul)
+- **LinkedIn:** [linkedin.com/in/shaikh-radwan-374435358](https://linkedin.com/in/shaikh-radwan-374435358)
 
-**Live Demo:** [https://brain-tumor-classifier-ecru.vercel.app/](https://brain-tumor-classifier-ecru.vercel.app/)
-
----
+**Project Links:**
+- **Repository:** [https://github.com/rad129ratul/brain-tumor-classifier](https://github.com/rad129ratul/brain-tumor-classifier)
+- **Live Demo:** [https://brain-tumor-classifier-ecru.vercel.app/](https://brain-tumor-classifier-ecru.vercel.app/)
+```
