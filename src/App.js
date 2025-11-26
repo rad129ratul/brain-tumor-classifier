@@ -356,7 +356,7 @@ const App = () => {
                               className={`progress-bar bg-${prediction.uncertainty.confidenceColor}`}
                               style={{ width: `${prediction.confidence}%` }}
                             >
-                              {prediction.confidence.toFixed(1)}% Confidence
+                              {prediction.confidence.toFixed(1)}%
                             </div>
                           </div>
                           <div className="mt-2">
